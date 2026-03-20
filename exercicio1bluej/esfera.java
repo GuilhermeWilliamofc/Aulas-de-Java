@@ -6,9 +6,7 @@
  * @version (um número da versão ou uma data)
  */
 
-// encaminhar atividade por email com a matricula, a formula utilizada em latex
 // Volume da Esfera: V = 4/3 * pi * r^3
-// marceloakira@ufg.br
 
 import java.util.Scanner;
 
