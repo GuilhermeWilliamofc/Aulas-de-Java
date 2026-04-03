@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Desafios POO - Master Java</title>
+    <meta name="description" content="Aprenda Programação Orientada a Objetos com desafios interativos em Java. Complete os códigos e teste seus conhecimentos!">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="background-blobs">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+        <div class="blob blob-3"></div>
+    </div>
+
+    <main class="container">
+        <header class="hero">
+            <h1 class="glitch" data-text="JAVA POO CHALLENGES">JAVA POO CHALLENGES</h1>
+            <p class="subtitle">Domine os pilares da Programação Orientada a Objetos com desafios práticos.</p>
+            <div class="progress-bar-container">
+                <div class="progress-bar" id="progressBar"></div>
+                <span class="progress-text">Progresso Geral: <span id="progressPercent">0</span>%</span>
+            </div>
+        </header>
+
+        <nav class="category-nav">
+            <button class="cat-btn active" data-category="conceitos">1. Conceitos Básicos</button>
+            <button class="cat-btn" data-category="sintaxe">2. C vs Java</button>
+            <button class="cat-btn" data-category="variaveis_fluxo">3. Variáveis e Fluxo</button>
+            <button class="cat-btn" data-category="fundamentos">4. POO: Classes e Main</button>
+            <button class="cat-btn" data-category="encapsulamento">5. POO: Encapsulamento</button>
+        </nav>
+
+        <section id="challenge-container" class="glass-card">
+            <div id="challenge-header">
+                <span class="badge" id="challenge-type">Desafio #1</span>
+                <h2 id="challenge-title">Classes e Atributos</h2>
+                <p id="challenge-description">Complete a declaração da classe e seus atributos básicos.</p>
+            </div>
+
+            <div class="code-editor-wrapper">
+                <div class="editor-header">
+                    <div class="dots">
+                        <span class="dot red"></span>
+                        <span class="dot yellow"></span>
+                        <span class="dot green"></span>
+                    </div>
+                    <span class="filename">Main.java</span>
+                </div>
+                <div class="code-editor" id="code-display">
+                    <!-- Code blocks will be injected here -->
+                </div>
+            </div>
+
+            <div class="controls">
+                <button id="check-btn" class="btn primary">Verificar Resposta</button>
+                <button id="next-btn" class="btn secondary hidden">Próximo Desafio</button>
+            </div>
+            
+            <div id="feedback" class="feedback-msg"></div>
+        </section>
+
+        <footer class="footer">
+            <p>&copy; 2026 Master Java POO. <span class="tag">Interativo</span></p>
+        </footer>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>
