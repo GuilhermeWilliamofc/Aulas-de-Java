@@ -2,25 +2,80 @@ function generateChallenges() {
     function rnd(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
     function rndInt(min, max) { return Math.floor(Math.random() * (max - min + 1)) + min; }
 
+    const contexts = [
+        {
+            name: "Automotivo",
+            classes: ["Carro", "Moto", "Caminhão", "Veiculo"],
+            attributes: ["ano", "quilometragem", "potencia", "portas", "litrosTanque"],
+            mathRange1: [2000, 2024],
+            mathRange2: [10000, 250000],
+            methods: ["acelerar", "frear", "abastecer", "revisar"],
+            params: ["km", "litros", "velocidade"],
+            types: { ano: "int", quilometragem: "int", potencia: "int", portas: "int", litrosTanque: "double" }
+        },
+        {
+            name: "Comércio",
+            classes: ["Produto", "Pedido", "Venda", "Item"],
+            attributes: ["preco", "estoque", "codigo", "peso", "desconto"],
+            mathRange1: [1, 500],
+            mathRange2: [5, 50],
+            methods: ["comprar", "vender", "aplicarDesconto", "repor"],
+            params: ["qtd", "taxa", "valor"],
+            types: { preco: "double", estoque: "int", codigo: "int", peso: "double", desconto: "double" }
+        },
+        {
+            name: "Pessoa",
+            classes: ["Cliente", "Aluno", "Usuario", "Paciente"],
+            attributes: ["idade", "id", "saldo", "nota", "pontos"],
+            mathRange1: [18, 90],
+            mathRange2: [1, 1000],
+            methods: ["cadastrar", "atualizar", "validar", "processar"],
+            params: ["n", "v", "entrada"],
+            types: { idade: "int", id: "int", saldo: "double", nota: "double", pontos: "int" }
+        },
+        {
+            name: "Biblioteca",
+            classes: ["Livro", "Revista", "Ebook", "Obra"],
+            attributes: ["paginas", "edicao", "anoPublicacao", "volume", "isbn"],
+            mathRange1: [100, 1200],
+            mathRange2: [1, 20],
+            methods: ["abrir", "emprestar", "devolver", "consultar"],
+            params: ["p", "id", "capitulo"],
+            types: { paginas: "int", edicao: "int", anoPublicacao: "int", volume: "int", isbn: "long" }
+        }
+    ];
+
+    const ctx = rnd(contexts);
     const cls1 = rnd(["Principal", "App", "Main", "Sistema", "Executavel"]);
-    const cls2 = rnd(["Produto", "Cliente", "Filme", "Carro", "Livro"]);
-    const varTipo1 = rnd([{t: "int", v: "42"}, {t: "double", v: "9.99"}, {t: "boolean", v: "true"}]);
-    const varName1 = rnd(["quantidade", "total", "saldo", "indice"]);
-    const varName2 = rnd(["peso", "idade", "codigo"]);
-    const math1 = rndInt(2, 9);
-    const math2 = rndInt(2, 9);
+    const cls2 = rnd(ctx.classes);
+    
+    // Pick unique attributes from context
+    let attrs = [...ctx.attributes];
+    const varName1 = attrs.splice(rndInt(0, attrs.length - 1), 1)[0];
+    const varName2 = attrs.splice(rndInt(0, attrs.length - 1), 1)[0];
+    
+    const methodName = rnd(ctx.methods);
+    const paramName = rnd(ctx.params);
+
+    const math1 = rndInt(ctx.mathRange1[0], ctx.mathRange1[1]);
+    const math2 = rndInt(ctx.mathRange2[0], ctx.mathRange2[1]);
+
+    const vType1 = ctx.types[varName1] || "int";
+    const vVal1 = vType1 === "double" ? (rndInt(10, 500) + .99) : rndInt(ctx.mathRange1[0], ctx.mathRange1[1]);
+    const varTipo1 = {t: vType1, v: vVal1.toString()};
+    
+    const vType2 = ctx.types[varName2] || "int";
+
     const opCond = rnd([">", "<", ">=", "<="]);
     const maxLoop = rndInt(3, 7);
-    const methodRet = rnd(["int", "double", "float"]);
-    const methodName = rnd(["calcular", "processar", "obterValor", "validar"]);
-    const paramName = rnd(["x", "valor", "entrada"]);
+    const methodRet = vType1; // Using variable type for method return consistency
 
     return {
         estrutura: [
             {
                 id: 1,
                 title: "Estruturação Básica de Arquivo Java",
-                description: "Todo código Java precisa estar dentro de uma classe, e para executar, precisamos do método principal. Complete a estrutura chamando a classe de '" + cls1 + "'.",
+                description: `Todo código Java precisa estar dentro de uma classe, e para executar, precisamos do método principal. Complete a estrutura chamando a classe de '${cls1}'.`,
                 type: "Completar Lacunas",
                 code: `
 <span class="kw">public class</span> <input type="text" class="challenge-input" data-answer="${cls1}" placeholder="nome da classe"> {
@@ -43,7 +98,7 @@ function generateChallenges() {
             {
                 id: 3,
                 title: "Regra de Ouro: Nome da Classe vs Arquivo",
-                description: "Se o seu arquivo salvo no computador se chama '" + cls2 + ".java', como DEVE ser a assinatura de declaração da classe principal dentro dele?",
+                description: `Se o seu arquivo salvo no computador se chama '${cls2}.java', como DEVE ser a assinatura de declaração da classe principal dentro dele?`,
                 type: "Completar Lacunas",
                 code: `
 <span class="co">// No arquivo ${cls2}.java</span>
@@ -56,7 +111,7 @@ function generateChallenges() {
             {
                 id: 1,
                 title: "Declaração de Variáveis Primitivas",
-                description: `Identifique o tipo primitivo correto para armazenar o valor '${varTipo1.v}' na variável '${varName1}'.`,
+                description: `No contexto ${ctx.name}, identifique o tipo primitivo correto para armazenar o valor '${varTipo1.v}' na variável '${varName1}'.`,
                 type: "Inferir Tipo",
                 code: `
 <span class="kw">public class</span> Main {
@@ -77,20 +132,20 @@ function generateChallenges() {
             {
                 id: 3,
                 title: "O Padrão Oculto de Java",
-                description: `Considere que a variável de classe (atributo) '${varName2}' do tipo int foi declarada, mas *NÃO* foi inicializada com = antes de ser usada. Qual é o valor padrão gerado automaticamente?`,
+                description: `Considere que o atributo '${varName2}' do tipo ${vType2} foi declarado na classe '${cls2}', mas *NÃO* foi inicializado com = antes de ser usado. Qual é o valor numérico padrão gerado automaticamente?`,
                 type: "Prever Valor Padrão",
-                code: `<input type="text" class="challenge-input" data-answer="0" placeholder="Digite apenas o valor numérico">`
+                code: `<input type="text" class="challenge-input" data-answer="${vType2 === 'double' ? '0.0' : vType2 === 'long' ? '0' : '0'}" placeholder="Digite apenas o valor numérico">`
             }
         ],
         io: [
             {
                 id: 1,
                 title: "Ordem de Operações e Concatenação (Com Parênteses)",
-                description: "Preveja exatamente o que aparecerá no console ao executarmos a linha abaixo. Lembre das regras matemáticas!",
+                description: `Preveja exatamente o que aparecerá no console ao executarmos a linha abaixo. Considere math1=${math1} e math2=${math2}.`,
                 type: "Prever Saída",
                 code: `
-System.out.println("Soma: " + (${math1} + ${math2}));
-<br><br>Console: <input type="text" class="challenge-input" data-answer="Soma:${math1 + math2}" placeholder="Digite a saída exata">`
+System.out.println("Total: " + (${math1} + ${math2}));
+<br><br>Console: <input type="text" class="challenge-input" data-answer="Total:${math1 + math2}" placeholder="Digite a saída exata">`
             },
             {
                 id: 2,
@@ -98,8 +153,8 @@ System.out.println("Soma: " + (${math1} + ${math2}));
                 description: "Java resolve as operações da esquerda para a direita. O que essa linha de código imprime no console se não temos parênteses de prioridade?",
                 type: "Prever Variante de Saída",
                 code: `
-System.out.println("Soma: " + ${math1} + ${math2});
-<br><br>Console: <input type="text" class="challenge-input" data-answer="Soma:${math1}${math2}" placeholder="Digite a saída exata">`
+System.out.println("Resultado: " + ${math1} + ${math2});
+<br><br>Console: <input type="text" class="challenge-input" data-answer="Resultado:${math1}${math2}" placeholder="Digite a saída exata">`
             },
             {
                 id: 3,
@@ -109,35 +164,35 @@ System.out.println("Soma: " + ${math1} + ${math2});
                 code: `
 int a = ${math1};
 int b = ${math2};
-System.out.println(a + b + " total");
-<br><br>Console: <input type="text" class="challenge-input" data-answer="${math1 + math2}total" placeholder="Digite a saída exata">`
+System.out.println(a + b + " unidades");
+<br><br>Console: <input type="text" class="challenge-input" data-answer="${math1 + math2}unidades" placeholder="Digite a saída exata">`
             }
         ],
         condicionais: [
             {
                 id: 1,
                 title: "Sintaxe do If/Else",
-                description: "O básico do controle de fluxo no Java: condicional sempre leva parênteses e escopos usam chaves.",
+                description: `O básico do controle de fluxo: complete a lógica para verificar se '${varName1}' é condizente.`,
                 type: "Completar Estrutura",
                 code: `
 <input type="text" class="challenge-input" data-answer="if" placeholder="..."> (${varName1} ${opCond} ${math1}) {
-    System.out.println("Condição confirmada.");
+    System.out.println("Valor dentro do limite.");
 } <input type="text" class="challenge-input" data-answer="else" placeholder="..."> {
-    System.out.println("Deu falso.");
+    System.out.println("Valor fora do esperado.");
 }`
             },
             {
                 id: 2,
                 title: "Operadores Lógicos no Fluxo",
-                description: "Dado este código de curta execução (short-circuit), o que será impresso?",
+                description: `Dado este código de curta execução, o que será impresso? Considere math2=${math2}.`,
                 type: "Prever Fluxo",
                 code: `
 boolean flag = false;
 if (!flag || (${math2} < 0)) {
-    System.out.print("X");
+    System.out.print("V");
 }
-System.out.print("Y");
-<br><br>Console: <input type="text" class="challenge-input" data-answer="XY" placeholder="Ex: XX, XY...">`
+System.out.print("F");
+<br><br>Console: <input type="text" class="challenge-input" data-answer="VF" placeholder="Ex: VV, VF...">`
             },
             {
                 id: 3,
@@ -148,7 +203,7 @@ System.out.print("Y");
 int k = ${math1};
 // if (k = ${math1}) {  <span class="co"><-- Errado</span>
 if (k <input type="text" class="challenge-input" data-answer="==" placeholder="?"> ${math1}) { <span class="co">// Correto</span>
-    System.out.println("OK");
+    System.out.println("Igual!");
 }`
             }
         ],
@@ -156,7 +211,7 @@ if (k <input type="text" class="challenge-input" data-answer="==" placeholder="?
             {
                 id: 1,
                 title: "A Anatomia do FOR",
-                description: "O laço for clássico exige três partes na sua estrutura. Complete a declaração iterativa:",
+                description: `O laço for clássico. Complete a declaração para iterar ${maxLoop} vezes:`,
                 type: "Estruturar Laço",
                 code: `
 <input type="text" class="challenge-input" data-answer="for" placeholder="comando"> (int i = 0; i < ${maxLoop}; <input type="text" class="challenge-input" data-answer="i++" placeholder="incremento...">) {
@@ -166,7 +221,7 @@ if (k <input type="text" class="challenge-input" data-answer="==" placeholder="?
             {
                 id: 2,
                 title: "Rastreio de Variável no While",
-                description: "Faça o teste de mesa iterativo em mente, avançando o laço. Qual o valor final exato atribuído para k ao parar o loop?",
+                description: `Qual o valor final de k? Começamos com k=${math1}.`,
                 type: "Prever Variável de Laço",
                 code: `
 int k = ${math1};
@@ -178,68 +233,74 @@ while (k <= ${math1 + 2}) {
             {
                 id: 3,
                 title: "Soma Cumulativa no Laço FOR",
-                description: "O que ocorre na variável sum iterativamente? Note que o laço começa em 1.",
+                description: `O que ocorre na variável sum iterativamente?`,
                 type: "Cálculo de Iterações",
                 code: `
 int sum = 0;
 for (int i = 1; i <= 3; i++) {
-    sum += ${math2};
+    sum += ${math1 % 10 + 1};
 }
 System.out.println(sum);
-<br><br>Valor no Console: <input type="text" class="challenge-input" data-answer="${math2 * 3}" placeholder="Apenas o número">`
+<br><br>Valor no Console: <input type="text" class="challenge-input" data-answer="${(math1 % 10 + 1) * 3}" placeholder="Apenas o número">`
             }
         ],
         metodos: [
             {
                 id: 1,
                 title: "Assinaturas e Retornos",
-                description: `Conclua a assinatura para o método publico chamado '${methodName}' que obrigatoriamente deve retornar e receber no parâmetro o tipo primitivo apontado de ${methodRet}.`,
+                description: `Conclua a assinatura para o método da classe '${cls2}' chamado '${methodName}'. Ele deve retornar e receber '${vType1}'.`,
                 type: "Assinatura Metódica",
                 code: `
-public <input type="text" class="challenge-input" data-answer="${methodRet}" placeholder="retorno"> ${methodName}(<input type="text" class="challenge-input" data-answer="${methodRet}" placeholder="parâmetro"> ${paramName}) {
-    return ${paramName} * 2;
+public <input type="text" class="challenge-input" data-answer="${vType1}" placeholder="retorno"> ${methodName}(<input type="text" class="challenge-input" data-answer="${vType1}" placeholder="parâmetro"> ${paramName}) {
+    return ${paramName};
 }`
             },
             {
                 id: 2,
                 title: "O Problema de Tipagem do Retorno",
-                description: "O código falha com 'incompatible types' porque promete int e entrega String. Preencha apenas o valor numérico que corresponda de verdade e solucione o erro de compatibilidade.",
+                description: "O código falha porque promete int e entrega String. Preencha apenas o valor numérico correto.",
                 type: "Restaurar Lógica de Tipos",
                 code: `
-public int obterIndice() {
-    return "${math1}"; <span class="co">// Erro! Tipo incorreto</span>
+public int obterValor() {
+    return "${math1 % 100}"; <span class="co">// Erro!</span>
 }
 
 <span class="co">// Corrigido:</span>
-return <input type="text" class="challenge-input" data-answer="${math1}" placeholder="valor numérico">;`
+return <input type="text" class="challenge-input" data-answer="${math1 % 100}" placeholder="valor numérico">;`
             },
             {
                 id: 3,
                 title: "Chamando Métodos em Cadeia",
-                description: "Java resolve as execuções de forma aninhada enviando como argumento a anterior. O que acontece em seguida?",
+                description: "Java resolve as execuções de forma aninhada. O que aparece no console?",
                 type: "Mapear Fluxo",
                 code: `
-public int duplicar(int v) { 
-    return v * 2; 
+public int triplicar(int v) { 
+    return v * 3; 
 }
 <span class="co">// Em outro local:</span>
-int x = ${math1};
-int temp = duplicar(x);
-System.out.println(duplicar(temp));
-<br><br>Saída: <input type="text" class="challenge-input" data-answer="${math1 * 4}" placeholder="...">`
+int x = ${rndInt(1, 5)};
+int temp = triplicar(x);
+System.out.println(triplicar(temp));
+<br><br>Saída: <input type="text" class="challenge-input" data-answer="${((rndInt(1, 5)) * 3) * 3}" placeholder="...">`,
+                callback: (data) => {
+                    // Update the logic to use the same random x value
+                    const xVal = rndInt(1, 5);
+                    data.code = data.code.replace(/\$\{rndInt\(1, 5\)\}/g, xVal);
+                    data.answers[0] = (xVal * 3 * 3).toString();
+                }
             }
         ],
         construtores: [
             {
                 id: 1,
                 title: "Características do Construtor",
-                description: "Preencha a estrutura destacando características exclusivas de construtores: mesmo nome da classe, falta de tipo de retorno, e o uso referencial 'this' para clareza.",
+                description: `No contexto ${ctx.name}, complete o construtor da classe '${cls2}'.`,
                 type: "Montar Construtor",
                 code: `
 public class ${cls2} {
-    private int ${varName2};
+    private ${vType2} ${varName2};
     
-    public <input type="text" class="challenge-input" data-answer="${cls2}" placeholder="nome..."> (int ${varName2}) {
+    public <input type="text" class="challenge-input" data-answer="${cls2}" placeholder="nome..."> (${vType2} ${varName2}) {
         <input type="text" class="challenge-input" data-answer="this" placeholder="...">.${varName2} = ${varName2};
     }
 }`
@@ -247,32 +308,32 @@ public class ${cls2} {
             {
                 id: 2,
                 title: "Valores no Corpo do Construtor",
-                description: "Um construtor realiza cálculo ou lógica base no momento da criação ('new'). Qual valor ficará guardado após rodar a linha instanciadora?",
+                description: "Qual valor ficará guardado após a inicialização?",
                 type: "Cálculo Lógico de Criação",
                 code: `
-public class Item {
-    public int peso;
-    public Item(int arg) { 
-        this.peso = arg + ${math1}; 
+public class ${cls2} {
+    public int valor;
+    public ${cls2}(int arg) { 
+        this.valor = arg + 10; 
     }
 }
 <span class="co">// Criação do objeto:</span>
-Item p = new Item(${math2});
-System.out.println(p.peso);
-<br><br>Console: <input type="text" class="challenge-input" data-answer="${math1 + math2}" placeholder="...">`
+${cls2} obj = new ${cls2}(${math1 % 100});
+System.out.println(obj.valor);
+<br><br>Console: <input type="text" class="challenge-input" data-answer="${(math1 % 100) + 10}" placeholder="...">`
             },
             {
                 id: 3,
                 title: "Identidade Semântica e Perda de Construtor",
-                description: "Houve um erro grave: o programador colocou uma palavra que fez o Java interpretar o código como um método normal, perdendo os poderes de construtor! Qual palavra deve ser apagada da declaração?",
+                description: "O código abaixo não é um construtor real porque tem um tipo de retorno. Qual palavra deve ser apagada?",
                 type: "Identificar Erro de Assinatura",
                 code: `
-public class Game {
-    public void Game() { <span class="co">// Problema ali!</span>
-        <span class="co">// Corpo do suposto construtor</span>
+public class ${cls2} {
+    public void ${cls2}() { <span class="co">// Erro!</span>
+        <span class="co">// ...</span>
     }
 }
-<br><br>Escreva a palavra que não poderia aparecer: 
+<br><br>Palavra para apagar: 
 <input type="text" class="challenge-input" data-answer="void" placeholder="...">`
             }
         ]
@@ -305,7 +366,6 @@ function loadChallenge(category, index) {
     challengeType.textContent = `Tópico: ${category.toUpperCase()} - Desafio #${challenge.id}`;
     codeDisplay.innerHTML = challenge.code;
     
-    // Add explanation if exists
     if (challenge.explanation) {
         const expDiv = document.createElement('div');
         expDiv.className = 'explanation';
@@ -326,11 +386,8 @@ function loadChallenge(category, index) {
 
 function updateProgress() {
     const categories = Object.keys(challengeData);
-    
     let total = 0;
-    categories.forEach(cat => {
-        total += challengeData[cat].length;
-    });
+    categories.forEach(cat => total += challengeData[cat].length);
 
     let completed = 0;
     for (let i = 0; i < categories.length; i++) {
@@ -356,7 +413,6 @@ function checkAnswers() {
         let expected = input.getAttribute('data-answer').toLowerCase();
         let value = input.value.toLowerCase();
         
-        // Remove spaces for lenient matching 
         expected = expected.replace(/\s+/g, '');
         value = value.replace(/\s+/g, '');
 
@@ -384,14 +440,10 @@ function showFeedback(msg, type) {
     feedback.className = `feedback-msg show ${type}`;
 }
 
-// Category Switching
 catBtns.forEach(btn => {
     btn.addEventListener('click', () => {
-        if (btn.classList.contains('locked')) return;
-        
         catBtns.forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
-        
         currentCategory = btn.getAttribute('data-category');
         currentChallengeIndex = 0;
         loadChallenge(currentCategory, currentChallengeIndex);
@@ -404,7 +456,6 @@ nextBtn.addEventListener('click', () => {
         currentChallengeIndex++;
         loadChallenge(currentCategory, currentChallengeIndex);
     } else {
-        // Switch to next category automatically if available
         const categories = Object.keys(challengeData);
         const currentIdx = categories.indexOf(currentCategory);
         if (currentIdx >= 0 && currentIdx < categories.length - 1) {
@@ -420,8 +471,8 @@ function showCompletion() {
     document.getElementById('challenge-container').innerHTML = `
         <div style="text-align:center; padding: 2rem;">
             <h2 style="font-size: 2.5rem; margin-bottom:1rem; color: #10b981;">🏁 Módulo Concluído!</h2>
-            <p style="color: #94a3b8; margin-bottom: 2rem;">Você finalizou a série de desafios de fundamentos até Construtores.</p>
-            <button onclick="location.reload()" class="btn primary">Reiniciar Tudo (Novos Textos Aleatórios)</button>
+            <p style="color: #94a3b8; margin-bottom: 2rem;">Você finalizou a série de desafios com sucesso!</p>
+            <button onclick="location.reload()" class="btn primary">Reiniciar (Novos Desafios Contextualizados)</button>
         </div>
     `;
 }
