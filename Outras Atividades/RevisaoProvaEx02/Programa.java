@@ -1,0 +1,14 @@
+import java.util.Scanner;
+
+public class Programa
+{
+    public static void main(String[] args){
+        Scanner scanner = new Scanner(System.in);
+        
+        System.out.println("Digite um numero: ");
+        int numeroDigitado = scanner.nextInt();
+        
+        ParOuImpar parimpar = new ParOuImpar(numeroDigitado);
+        parimpar.parImpar();
+    }
+}
