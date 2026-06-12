@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="596.0" prefWidth="688.0" style="-fx-background-color: #891212;" stylesheets="@style.css" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="596.0" prefWidth="688.0" style="-fx-background-color: #891212;" stylesheets="@style.css" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.AppController">
    <top>
       <Label contentDisplay="RIGHT" style="-fx-label-padding: 10;" text="Cadastro de Filmes (Locadora)" BorderPane.alignment="CENTER">
          <font>
@@ -51,7 +51,7 @@
                         </ImageView>
                      </graphic>
                   </Label>
-                  <TextField />
+                  <TextField fx:id="idField" disable="true" editable="false" />
                </children>
             </HBox>
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" style="-fx-padding: 10;">
@@ -68,7 +68,7 @@
                         </ImageView>
                      </graphic>
                   </Label>
-                  <TextField />
+                  <TextField fx:id="tituloField" disable="true" />
                </children>
             </HBox>
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" style="-fx-padding: 10;">
@@ -85,7 +85,7 @@
                         </ImageView>
                      </graphic>
                   </Label>
-                  <TextField />
+                  <TextField fx:id="generoField" disable="true" />
                </children>
             </HBox>
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" style="-fx-padding: 10;">
@@ -102,12 +102,12 @@
                         </ImageView>
                      </graphic>
                   </Label>
-                  <TextField />
+                  <TextField fx:id="anoField" disable="true" />
                </children>
             </HBox>
             <HBox prefHeight="100.0" prefWidth="200.0" style="-fx-alignment: center;">
                <children>
-                  <Button contentDisplay="RIGHT" mnemonicParsing="false" text="Adicionar">
+                  <Button fx:id="adicionarButton" contentDisplay="RIGHT" mnemonicParsing="false" onAction="#onAdicionarButtonAction" text="Adicionar">
                      <HBox.margin>
                         <Insets right="5.0" />
                      </HBox.margin>
@@ -118,7 +118,7 @@
                            </image>
                         </ImageView>
                      </graphic></Button>
-                  <Button contentDisplay="RIGHT" mnemonicParsing="false" text="Atualizar">
+                  <Button fx:id="atualizarButton" contentDisplay="RIGHT" disable="true" mnemonicParsing="false" onAction="#onAtualizarButtonAction" text="Atualizar">
                      <HBox.margin>
                         <Insets right="5.0" />
                      </HBox.margin>
@@ -129,7 +129,7 @@
                            </image>
                         </ImageView>
                      </graphic></Button>
-                  <Button contentDisplay="RIGHT" mnemonicParsing="false" text="Deletar">
+                  <Button fx:id="deletarButton" contentDisplay="RIGHT" disable="true" mnemonicParsing="false" onAction="#onDeletarButtonAction" text="Deletar">
                      <HBox.margin>
                         <Insets right="5.0" />
                      </HBox.margin>
@@ -140,7 +140,7 @@
                            </image>
                         </ImageView>
                      </graphic></Button>
-                  <Button contentDisplay="RIGHT" mnemonicParsing="false" text="Cancelar">
+                  <Button fx:id="cancelarButton" contentDisplay="RIGHT" disable="true" mnemonicParsing="false" onAction="#onCancelarButtonAction" text="Cancelar">
                      <HBox.margin>
                         <Insets right="5.0" />
                      </HBox.margin>
@@ -151,7 +151,7 @@
                            </image>
                         </ImageView>
                      </graphic></Button>
-                  <Button contentDisplay="RIGHT" mnemonicParsing="false" text="Salvar">
+                  <Button fx:id="salvarButton" contentDisplay="RIGHT" disable="true" mnemonicParsing="false" onAction="#onSalvarButtonAction" text="Salvar">
                      <graphic>
                         <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true" styleClass="iconsmall">
                            <image>
@@ -165,12 +165,12 @@
       </VBox>
    </center>
    <bottom>
-      <TableView prefHeight="200.0" prefWidth="600.0" style="-fx-background-color: black;" BorderPane.alignment="CENTER">
+      <TableView fx:id="tabela" prefHeight="200.0" prefWidth="600.0" style="-fx-background-color: black;" BorderPane.alignment="CENTER">
         <columns>
-          <TableColumn prefWidth="75.0" text="ID" />
-          <TableColumn prefWidth="75.0" text="Titulo" />
-            <TableColumn prefWidth="75.0" text="Gênero" />
-            <TableColumn prefWidth="75.0" text="Ano" />
+          <TableColumn fx:id="idCol" prefWidth="75.0" text="ID" />
+          <TableColumn fx:id="tituloCol" prefWidth="75.0" text="Titulo" />
+          <TableColumn fx:id="generoCol" prefWidth="75.0" text="Gênero" />
+          <TableColumn fx:id="anoCol" prefWidth="75.0" text="Ano" />
         </columns>
       </TableView>
    </bottom>

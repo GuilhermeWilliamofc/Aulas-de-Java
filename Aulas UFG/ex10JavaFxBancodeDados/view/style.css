@@ -1,31 +1,43 @@
 .label {
-	-fx-background-color: black;
-    	-fx-text-fill: white;
-	-fx-label-padding: 5px;
-	-fx-background-radius: 10px;
-	-fx-font-family: "Arial Black";
+    -fx-background-color: black;
+        -fx-text-fill: white;
+    -fx-label-padding: 5px;
+    -fx-background-radius: 10px;
+    -fx-font-family: "Arial Black";
 }
 
 .table-view .column-header {
-    	-fx-background-color: black;
+        -fx-background-color: black;
 }
 
 .button{
-	-fx-background-color: black;
-	-fx-text-fill: white;
-	-fx-border-color: white;
-	-fx-border-radius: 5px;
-	-fx-background-radius: 5px;
-	-fx-font-family: "Arial Black";
-	-fx-padding: 6 12;
-	-fx-font-size: 12px;
+    -fx-background-color: black;
+    -fx-text-fill: white;
+    -fx-border-color: white;
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
+    -fx-font-family: "Arial Black";
+    -fx-padding: 6 12;
+    -fx-font-size: 12px;
+}
+
+.button:hover {
+    -fx-cursor: hand;               /* Muda o mouse para a "mãozinha" */
+    -fx-scale-x: 1.05;              /* Dá um leve zoom (efeito de pulo) */
+    -fx-scale-y: 1.05;
+}
+
+/* Estado quando o botão é clicado */
+.button:pressed {
+    -fx-scale-x: 0.95;              /* O botão "encolhe" levemente */
+    -fx-scale-y: 0.95;
 }
 
 .text-field {
-	-fx-border-color: #9A830D;
-	-fx-border-radius: 5px;
-	-fx-background-radius: 5px;
-	-fx-border-width: 3px;
+    -fx-border-color: #9A830D;
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
+    -fx-border-width: 3px;
 }
 
 .iconsmall {
