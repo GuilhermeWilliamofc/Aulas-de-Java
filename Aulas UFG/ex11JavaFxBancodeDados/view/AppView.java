@@ -3,7 +3,7 @@ package view;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.layout.Pane;
+import javafx.scene.Parent;
 import javafx.stage.Stage;
 import java.io.File;
 import java.net.URL;
@@ -33,8 +33,8 @@ public class AppView extends Application
     @Override
     public void start(Stage primaryStage) throws Exception {
         try {
-            Pane pane = loader.<Pane>load();
-            Scene scene = new Scene(pane, 688, 596);
+            Parent root = loader.load();
+            Scene scene = new Scene(root, 688, 596);
             this.primaryStage = primaryStage;
             primaryStage.setScene(scene);
             primaryStage.show();            

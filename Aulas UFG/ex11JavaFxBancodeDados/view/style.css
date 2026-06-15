@@ -6,6 +6,12 @@
     -fx-font-family: "Arial Black";
 }
 
+.label.titulo-principal {
+    -fx-font-size: 25px;
+    -fx-font-family: "Arial Black";
+    -fx-label-padding: 10px;
+}
+
 .table-view .column-header {
         -fx-background-color: black;
 }
